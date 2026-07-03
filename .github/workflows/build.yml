@@ -1074,14 +1074,9 @@ jobs:
       - name: ⬇️ Install setup dependencies
         run: |
           sudo apt update && sudo apt install -y git curl snapd ccache
-          
-          for i in $(seq 1 5); do
-            if sudo snap install snapcraft --classic; then
-              break;
-            fi
-            echo "Retrying snap install..."
-            sleep 10
-          done
+
+      - name: ⬇️ Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v3
 
       - name: 🧰 Checkout
         uses: actions/checkout@v4
@@ -1113,8 +1108,7 @@ jobs:
           max-size: 1G
 
       - name: 🛠️ Build
-        run: |
-          sudo snapcraft pack
+        uses: canonical/craft-actions/snapcraft/pack@main
 
       - name: 🟩 Rename Snap
         run: |
